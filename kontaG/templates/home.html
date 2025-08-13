@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KontaGo - Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #f4f6f8;
+        }
+        header {
+            background: #2d3e50;
+            color: #fff;
+            padding: 1.5rem 2rem;
+            text-align: center;
+        }
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        h1 {
+            margin-top: 0;
+        }
+        .cta-btn {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.75rem 2rem;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: background 0.2s;
+        }
+        .cta-btn:hover {
+            background: #0056b3;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #e9ecef;
+            color: #555;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to KontaGo</h1>
+        <p>Your smart solution for managing inventory and finances.</p>
+    </header>
+    <main>
+        <h2>Get Started</h2>
+        <p>
+            KontaGo helps you track your expenses, manage your inventory, and gain insights into your financial health. 
+            Sign up or log in to start managing efficiently.
+        </p>
+        <a href="{% url 'product_entry' %}" class="cta-btn" style="background:#17a2b8;">Register Product Entry</a>
+        <a href="{% url 'product_takeout' %}" class="cta-btn" style="background:#dc3545;">Register Product Takeout</a>
+    </main>
+    <footer>
+        &copy; 2025 KontaGo. All rights reserved.
+    </footer>
