@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f0e6;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4b2e2e;
+            margin-bottom: 30px;
+        }
+        .inventory-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background-color: #fffaf3;
+            border: 1px solid #d9c7a6;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 2px 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease-in-out;
+            text-align: center;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .card h2 {
+            font-size: 22px;
+            color: #3e2723;
+            margin: 0 0 10px;
+        }
+        .card p {
+            margin: 6px 0;
+            font-size: 15px;
+            color: #4e342e;
+        }
+        .card p strong {
+            color: #3e2723;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .btn-add {
+            background-color: #6d4c41;
+            color: #fff;
+        }
+        .btn-add:hover {
+            background-color: #5d4037;
+        }
+        .btn-delete {
+            background-color: #8d3c2b;
+            color: #fff;
+        }
+        .btn-delete:hover {
+            background-color: #6e2c1a;
+        }
+        .btn-home {
+            display: block;
+            margin: 30px auto 0 auto;
+            padding: 12px 20px;
+            background-color: #4b2e2e;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            width: fit-content;
+            transition: background-color 0.2s;
+        }
+        .btn-home:hover {
+            background-color: #3e2723;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product Inventory</h1>
+
+    <div class="inventory-container">
+        {% for product in products %}
+        <div class="card">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% endif %}
+            <h2>{{ product.name }}</h2>
+            <p><strong>Category:</strong> {{ product.get_category_display }}</p>
+
+            <!-- Mostrar fecha si existe -->
+            {% if product.expiration_date %}
+                <p><strong>Expiration Date:</strong> {{ product.expiration_date }}</p>
+            {% endif %}
+
+            <p><strong>Supplier:</strong> {{ product.supplier }}</p>
+            <p><strong>Price:</strong> ${{ product.price }}</p>
+            <p><strong>Stock:</strong> {{ product.quantity }}</p>
+            <p><strong>Description:</strong> {{ product.description }}</p>
+
+            <!-- Botón que suma +1 al stock -->
+            <a href="{% url 'add_unit' product.id %}" class="btn btn-add">➕ Add a new unit</a>
+
+            <!-- Botón que elimina producto -->
+            <a href="{% url 'delete_product' product.id %}" 
+               class="btn btn-delete"
+               onclick="return confirm('¿Seguro que quieres eliminar {{ product.name }}?');">
+                🗑 Delete product
+            </a>
+        </div>
+        {% empty %}
+        <p style="text-align:center; color:#6d4c41;">No hay productos en el inventario.</p>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'home' %}" class="btn-home">⬅ Back to Home</a>
+</body>
+</html>

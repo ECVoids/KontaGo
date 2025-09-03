@@ -9,65 +9,64 @@
             font-family: Arial, sans-serif; 
             margin: 0; 
             padding: 0; 
-            background: #f4f6f8;
+            background: #fdf6e3; /* beige cálido */
+            color: #5c3d2e; /* café oscuro */
         }
         header {
-            background: #2d3e50;
+            background: #d9a066;
             color: #fff;
-            padding: 1.5rem 2rem;
+            padding: 2rem;
             text-align: center;
         }
         main {
-            max-width: 800px;
+            max-width: 900px;
             margin: 2rem auto;
-            background: #fff;
+            background: #fff8e7;
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(92,61,46,0.2);
+            text-align: center;
         }
-        h1 {
+        h1, h2 {
             margin-top: 0;
+            color: #5c3d2e;
         }
         .cta-btn {
             display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.75rem 2rem;
-            background: #007bff;
+            margin: 1rem;
+            padding: 0.8rem 2rem;
+            background: #a97155;
             color: #fff;
-            border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             text-decoration: none;
-            font-size: 1.1rem;
-            transition: background 0.2s;
+            font-size: 1rem;
+            transition: 0.2s;
         }
         .cta-btn:hover {
-            background: #0056b3;
+            background: #8b5e3c;
         }
         footer {
             text-align: center;
             padding: 1rem;
-            background: #e9ecef;
-            color: #555;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            background: #f1e0c5;
+            color: #5c3d2e;
+            margin-top: 3rem;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Welcome to KontaGo</h1>
-        <p>Your smart solution for managing inventory and finances.</p>
+        <h1>KontaGo</h1>
+        <p>Smart inventory & finance manager</p>
     </header>
     <main>
-        <h2>Get Started</h2>
-        <p>
-            KontaGo helps you track your expenses, manage your inventory, and gain insights into your financial health. 
-            Sign up or log in to start managing efficiently.
-        </p>
-        <a href="{% url 'product_entry' %}" class="cta-btn" style="background:#17a2b8;">Register Product Entry</a>
-        <a href="{% url 'product_takeout' %}" class="cta-btn" style="background:#dc3545;">Register Product Takeout</a>
+        <h2>Quick Actions</h2>
+        <a href="{% url 'product_entry' %}" class="cta-btn">➕ Product Entry</a>
+        <a href="{% url 'product_takeout' %}" class="cta-btn">➖ Product Takeout</a>
+        <a href="{% url 'inventory_display' %}" class="cta-btn" style="background:#b08968;">📦 View Inventory</a>
     </main>
     <footer>
         &copy; 2025 KontaGo. All rights reserved.
     </footer>
+</body>
+</html>

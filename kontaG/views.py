@@ -1,36 +1,55 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .forms import ProductEntryForm
 from .models import Product
 from .forms import ProductTakeoutForm
 
-# Create your views here.
 def home(request):
     return render(request, 'home.html')
+
+def delete_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    product.delete()
+    return redirect('inventory_display')
+
+def add_unit(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    product.quantity += 1
+    product.save()
+    return redirect('inventory_display')
+
+def inventory_display(request):
+    products = Product.objects.all()
+    return render(request, 'inventory_display.html', {'products': products})
 
 def product_entry(request):
     message = ""
     if request.method == 'POST':
-        form = ProductEntryForm(request.POST)
+        form = ProductEntryForm(request.POST, request.FILES)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            description = form.cleaned_data['description']
-            quantity = form.cleaned_data['quantity']
-            product, created = Product.objects.get_or_create(name=name, defaults={'description': description, 'quantity': 0})
-            if not created:
-                product.quantity += quantity
-                if description:
-                    product.description = description
-            else:
-                product.quantity = quantity
+            product = Product(
+                name=form.cleaned_data['name'],
+                category=form.cleaned_data['category'],
+                description=form.cleaned_data['description'],
+                price=form.cleaned_data['price'],
+                supplier=form.cleaned_data['supplier'],
+                quantity=form.cleaned_data['quantity'],
+                image=form.cleaned_data['image']
+            )
+
+            # ✅ Categorías que requieren fecha de vencimiento
+            categories_with_expiration = ['alimentos', 'cosmetica', 'limpieza']
+
+            if form.cleaned_data['category'] in categories_with_expiration:
+                product.expiration_date = form.cleaned_data['expiration_date']
+
             product.save()
-            message = "Product entry registered successfully!"
-            form = ProductEntryForm()  # Reset form
+            message = "✅ Product created successfully!"
+            form = ProductEntryForm()  # reset form
     else:
         form = ProductEntryForm()
     return render(request, 'product_entry.html', {'form': form, 'message': message})
 
-# ...existing code...
 def product_takeout(request):
     message = ""
     if request.method == 'POST':

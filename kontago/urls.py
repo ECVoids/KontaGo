@@ -17,10 +17,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from kontaG import views as kontaG_views
+from django.conf.urls.static import static
+from django.conf import settings
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', kontaG_views.home, name='home'),  # Home page route
     path('product-entry/', kontaG_views.product_entry, name='product_entry'),
     path('product-takeout/', kontaG_views.product_takeout, name='product_takeout'),
+    path('inventory/', kontaG_views.inventory_display, name='inventory_display'),
+    path('delete-product/<int:product_id>/', kontaG_views.delete_product, name='delete_product'),
+    path('add-unit/<int:product_id>/', kontaG_views.add_unit, name='add_unit'),
+
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
