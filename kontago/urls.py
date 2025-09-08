@@ -34,7 +34,8 @@ urlpatterns = [
     path('suppliers/', kontaG_views.supplier_list, name='supplier_list'),
     path('suppliers/new/', kontaG_views.supplier_entry, name='supplier_entry'),
     path('suppliers/<int:supplier_id>/delete/', kontaG_views.delete_supplier, name='delete_supplier'),
-
+    path("facturas/", kontaG_views.sales_list, name="sales_list"),
+    path("facturas/nueva/", kontaG_views.register_invoice, name="register_invoice"),
 ]
 
 if settings.DEBUG:
