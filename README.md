@@ -1,4 +1,4 @@
-# # 🛒 KontaGo:Smart inventory & finance manager(Django Project)
+# # 🛒 KontaGo: Smart inventory & finance manager(Django Project)
 
 ## 📥 Clonar el repositorio usando Git
 
