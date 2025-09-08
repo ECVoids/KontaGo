@@ -1,5 +1,7 @@
 from django import forms
 from .models import Product
+from .models import Supplier
+
 
 from django import forms
 
@@ -43,6 +45,28 @@ class ProductEntryForm(forms.Form):
             self.add_error("expiration_date", "Expiration date is required for food products.")
         
         return cleaned_data
+    
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = ['name', 'contact_name', 'phone', 'email', 'address', 'notes', 'products']
+        widgets = {
+            'address': forms.Textarea(attrs={'rows': 3}),
+            'notes': forms.Textarea(attrs={'rows': 3}),
+            'products': forms.CheckboxSelectMultiple,  # checkboxes
+        }
+        labels = {
+            'name': "Company's name",
+        }
+
+    def save(self, commit=True):
+        supplier = super().save(commit=False)
+        if commit:
+            supplier.save()
+            self.save_m2m()  # 👈 guarda la relación ManyToMany
+        return supplier
+
+
 
 class ProductTakeoutForm(forms.Form):
     name = forms.CharField(label="Product Name", max_length=100)

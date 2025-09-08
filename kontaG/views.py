@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .forms import ProductEntryForm
-from .models import Product
-from .forms import ProductTakeoutForm
+from .forms import ProductEntryForm, ProductTakeoutForm, SupplierForm
+from .models import Product, Supplier
+from django.contrib import messages
+
+
 
 def home(request):
     return render(request, 'home.html')
@@ -16,6 +18,7 @@ def add_unit(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     product.quantity += 1
     product.save()
+    messages.success(request, f"✅ Se añadió una nueva unidad al producto {product.name}.")
     return redirect('inventory_display')
 
 def inventory_display(request):
@@ -49,6 +52,29 @@ def product_entry(request):
     else:
         form = ProductEntryForm()
     return render(request, 'product_entry.html', {'form': form, 'message': message})
+
+
+def supplier_list(request):
+    suppliers = Supplier.objects.all()
+    return render(request, 'supplier_list.html', {'suppliers': suppliers})
+
+def supplier_entry(request):
+    if request.method == 'POST':
+        form = SupplierForm(request.POST)
+        if form.is_valid():
+            supplier = form.save()  # ✅ ahora sí guarda también los productos
+            messages.success(request, "✅ Supplier creado correctamente.")
+            return redirect('supplier_list')
+    else:
+        form = SupplierForm()
+    return render(request, 'supplier_entry.html', {'form': form})
+
+
+def delete_supplier(request, supplier_id):
+    supplier = get_object_or_404(Supplier, id=supplier_id)
+    supplier.delete()
+    messages.success(request, f"✅ Supplier {supplier.name} eliminado correctamente.")
+    return redirect('supplier_list')
 
 def product_takeout(request):
     message = ""

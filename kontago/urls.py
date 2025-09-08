@@ -22,6 +22,7 @@ from django.conf import settings
 
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', kontaG_views.home, name='home'),  # Home page route
@@ -30,6 +31,9 @@ urlpatterns = [
     path('inventory/', kontaG_views.inventory_display, name='inventory_display'),
     path('delete-product/<int:product_id>/', kontaG_views.delete_product, name='delete_product'),
     path('add-unit/<int:product_id>/', kontaG_views.add_unit, name='add_unit'),
+    path('suppliers/', kontaG_views.supplier_list, name='supplier_list'),
+    path('suppliers/new/', kontaG_views.supplier_entry, name='supplier_entry'),
+    path('suppliers/<int:supplier_id>/delete/', kontaG_views.delete_supplier, name='delete_supplier'),
 
 ]
 

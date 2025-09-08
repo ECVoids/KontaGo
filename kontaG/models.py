@@ -21,3 +21,15 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Supplier(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    contact_name = models.CharField(max_length=100, blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+    products = models.ManyToManyField(Product, related_name="suppliers")
+    
+    def __str__(self):
+        return self.name

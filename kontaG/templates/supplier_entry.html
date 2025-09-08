@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Crear producto</title>
+    <title>Create Supplier</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,10 +42,10 @@
             text-align: left;
         }
         input[type="text"],
-        input[type="number"],
-        input[type="file"],
-        input[type="date"],
-        textarea {
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
             width: 100%;
             padding: 10px;
             border: 1px solid #d9c7a6;
@@ -54,6 +54,9 @@
             background-color: #fff;
             color: #3e2723;
             box-sizing: border-box;
+        }
+        select[multiple] {
+            height: 120px;
         }
         textarea {
             resize: vertical;
@@ -99,74 +102,43 @@
 </head>
 <body>
     <div class="container">
-        <h1>Product creation</h1>
-        <p class="subtext">Please fill out this form to create a new product in the warehouse</p>
+        <h1>Create Supplier</h1>
+        <p class="subtext">Fill out this form to register a new supplier</p>
 
-        {% if message %}
-            <div class="message">{{ message }}</div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
         {% endif %}
 
-        <form method="post" enctype="multipart/form-data">
+        <form method="post">
             {% csrf_token %}
             
-            <label for="id_name">Product name:</label>
+            <label for="id_name">Company's name:</label>
             {{ form.name }}
 
-            <label for="id_category">Product category:</label>
-            {{ form.category }}
+            <label for="id_contact_name">Contact person:</label>
+            {{ form.contact_name }}
 
-            <label for="id_description">Product description:</label>
-            {{ form.description }}
+            <label for="id_email">Email:</label>
+            {{ form.email }}
 
-            <label for="id_price">Product price:</label>
-            {{ form.price }}
+            <label for="id_phone">Phone:</label>
+            {{ form.phone }}
 
-            <label for="id_supplier">Supplier:</label>
-            {{ form.supplier }}
+            <label for="id_address">Address:</label>
+            {{ form.address }}
 
-            <label for="id_quantity">Initial stock:</label>
-            {{ form.quantity }}
+            <label for="id_notes">Description:</label>
+            {{ form.notes }}
 
-            <label for="id_image">Product image:</label>
-            {{ form.image }}
-
-            <!-- Campo de fecha de vencimiento (solo visible si corresponde) -->
-            <label for="id_expiration_date" id="label-expiration" style="display:none;">
-                Expiration date:
-            </label>
-            <div id="expiration-wrapper" style="display:none;">
-                {{ form.expiration_date }}
-            </div>
+            <label for="id_products">Products supplied:</label>
+            {{ form.products }}
 
             <button type="submit" class="btn-submit">Submit</button>
         </form>
 
-        <a href="{% url 'inventory_display' %}" class="btn-home">⬅ Back to Inventory</a>
+        <a href="{% url 'supplier_list' %}" class="btn-home">⬅ Back to Supplier Records</a>
     </div>
-
-    <!-- Mostrar campo de fecha según la categoría -->
-    <script>
-        const categorySelect = document.getElementById("id_category");
-        const expirationLabel = document.getElementById("label-expiration");
-        const expirationWrapper = document.getElementById("expiration-wrapper");
-        const expirationInput = document.getElementById("id_expiration_date");
-
-        // Categorías que requieren fecha
-        const categoriesWithExpiration = ["alimentos", "cosmetica", "limpieza"];
-
-        function toggleExpiration() {
-            if (categoriesWithExpiration.includes(categorySelect.value)) {
-                expirationLabel.style.display = "block";
-                expirationWrapper.style.display = "block";
-            } else {
-                expirationLabel.style.display = "none";
-                expirationWrapper.style.display = "none";
-                expirationInput.value = "";
-            }
-        }
-
-        categorySelect.addEventListener("change", toggleExpiration);
-        document.addEventListener("DOMContentLoaded", toggleExpiration);
-    </script>
 </body>
 </html>
