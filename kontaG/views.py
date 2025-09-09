@@ -1,11 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+import os
 from django.db import transaction
 from django.db.models import Max
 import json
 from .forms import ProductEntryForm, ProductTakeoutForm, SupplierForm, FacturaForm, DetalleFacturaFormSet
 from .models import Product, Supplier, Venta, Factura, DetalleFactura
 from django.contrib import messages
+from django.db.models import Q
+from django.core.paginator import Paginator
+
 
 
 
@@ -24,9 +30,83 @@ def add_unit(request, product_id):
     messages.success(request, f"✅ Se añadió una nueva unidad al producto {product.name}.")
     return redirect('inventory_display')
 
+from django.db.models import Q
+
 def inventory_display(request):
-    products = Product.objects.all()
-    return render(request, 'inventory_display.html', {'products': products})
+    # Parámetros GET
+    q          = request.GET.get("q", "").strip()
+    category   = request.GET.get("category", "").strip()
+    supplier   = request.GET.get("supplier", "").strip()   # ← ahora será el NOMBRE del proveedor (texto)
+    min_price  = request.GET.get("min_price", "").strip()
+    max_price  = request.GET.get("max_price", "").strip()
+    in_stock   = request.GET.get("in_stock", "").strip()   # "" | "yes" | "no"
+    order_by   = request.GET.get("order_by", "name").strip()
+    per_page   = int(request.GET.get("per_page", 24))
+    page       = int(request.GET.get("page", 1))
+
+    # SIN select_related, porque supplier no es FK
+    qs = Product.objects.all()
+
+    # Texto libre
+    if q:
+        qs = qs.filter(
+            Q(name__icontains=q) |
+            Q(description__icontains=q) |
+            Q(category__icontains=q) |
+            Q(supplier__icontains=q)   # ← busca por texto en supplier
+        )
+
+    # Filtros específicos
+    if category:
+        qs = qs.filter(category=category)
+    if supplier:
+        qs = qs.filter(supplier__iexact=supplier)  # ← filtra por el texto exacto del proveedor
+    if min_price:
+        try: qs = qs.filter(price__gte=float(min_price))
+        except ValueError: pass
+    if max_price:
+        try: qs = qs.filter(price__lte=float(max_price))
+        except ValueError: pass
+    if in_stock == "yes":
+        qs = qs.filter(quantity__gt=0)
+    elif in_stock == "no":
+        qs = qs.filter(quantity__lte=0)
+
+    # Orden: usar 'supplier' como texto (no supplier__name)
+    allowed_order = {
+        "name","-name","price","-price","quantity","-quantity",
+        "supplier","-supplier","category","-category"
+    }
+    if order_by not in allowed_order:
+        order_by = "name"
+    qs = qs.order_by(order_by)
+
+    # Paginación
+    paginator = Paginator(qs, per_page)
+    page_obj = paginator.get_page(page)
+
+    # Opciones para los <select>
+    categories = (Product.objects
+                  .order_by("category")
+                  .values_list("category", flat=True).distinct())
+    suppliers  = (Product.objects
+                  .order_by("supplier")
+                  .values_list("supplier", flat=True).distinct())  # ← nombres de proveedor (texto)
+
+    context = {
+        "products": page_obj.object_list,
+        "page_obj": page_obj,
+        "paginator": paginator,
+        "filters": {
+            "q": q, "category": category, "supplier": supplier,
+            "min_price": min_price, "max_price": max_price,
+            "in_stock": in_stock, "order_by": order_by, "per_page": per_page,
+        },
+        "categories": categories,
+        "suppliers": suppliers,
+    }
+    return render(request, "inventory_display.html", context)
+
 
 def product_entry(request):
     message = ""
@@ -196,3 +276,82 @@ def register_invoice(request):
     # GET
     factura_form = FacturaForm()
     return render(request, "register_invoice.html", {"factura_form": factura_form, "products": products})
+
+def _filtered_products(request):
+    q          = request.GET.get("q", "").strip()
+    category   = request.GET.get("category", "").strip()
+    supplier   = request.GET.get("supplier", "").strip()
+    min_price  = request.GET.get("min_price", "").strip()
+    max_price  = request.GET.get("max_price", "").strip()
+    in_stock   = request.GET.get("in_stock", "").strip()  # "" | "yes" | "no"
+    order_by   = request.GET.get("order_by", "name").strip()
+
+    qs = Product.objects.all()
+
+    if q:
+        qs = qs.filter(
+            Q(name__icontains=q) |
+            Q(description__icontains=q) |
+            Q(category__icontains=q) |
+            Q(supplier__icontains=q)
+        )
+    if category:
+        qs = qs.filter(category=category)
+    if supplier:
+        qs = qs.filter(supplier__iexact=supplier)
+    if min_price:
+        try: qs = qs.filter(price__gte=float(min_price))
+        except ValueError: pass
+    if max_price:
+        try: qs = qs.filter(price__lte=float(max_price))
+        except ValueError: pass
+    if in_stock == "yes":
+        qs = qs.filter(quantity__gt=0)
+    elif in_stock == "no":
+        qs = qs.filter(quantity__lte=0)
+
+    allowed_order = {
+        "name","-name","price","-price","quantity","-quantity",
+        "supplier","-supplier","category","-category"
+    }
+    if order_by not in allowed_order:
+        order_by = "name"
+
+    return qs.order_by(order_by)
+
+def _link_callback(uri, rel):
+    """
+    Permite a xhtml2pdf resolver rutas de STATIC y MEDIA.
+    """
+    if uri.startswith(settings.MEDIA_URL):
+        path = os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ""))
+    elif uri.startswith(settings.STATIC_URL):
+        path = os.path.join(getattr(settings, "STATIC_ROOT", ""), uri.replace(settings.STATIC_URL, ""))
+    else:
+        return uri  # URL absoluta
+    if not os.path.isfile(path):
+        return uri
+    return path
+
+def inventory_pdf(request):
+    products = _filtered_products(request)  # SIN paginar
+
+    context = {
+        "products": products,
+        "filters": {
+            "q": request.GET.get("q",""),
+            "category": request.GET.get("category",""),
+            "supplier": request.GET.get("supplier",""),
+            "min_price": request.GET.get("min_price",""),
+            "max_price": request.GET.get("max_price",""),
+        }
+    }
+
+    template = get_template("inventory_pdf.html")
+    html = template.render(context)
+
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="inventario.pdf"'
+
+    pisa.CreatePDF(html, dest=response, link_callback=_link_callback)
+    return response

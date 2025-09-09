@@ -21,11 +21,9 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 
-
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', kontaG_views.home, name='home'),  # Home page route
+    path('', kontaG_views.home, name='home'),
     path('product-entry/', kontaG_views.product_entry, name='product_entry'),
     path('product-takeout/', kontaG_views.product_takeout, name='product_takeout'),
     path('inventory/', kontaG_views.inventory_display, name='inventory_display'),
@@ -36,7 +34,9 @@ urlpatterns = [
     path('suppliers/<int:supplier_id>/delete/', kontaG_views.delete_supplier, name='delete_supplier'),
     path("facturas/", kontaG_views.sales_list, name="sales_list"),
     path("facturas/nueva/", kontaG_views.register_invoice, name="register_invoice"),
+    path("inventory/pdf/", kontaG_views.inventory_pdf, name="inventory_pdf"),  # <-- aquí el cambio
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

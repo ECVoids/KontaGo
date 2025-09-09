@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    @page { size: A4; margin: 18mm 14mm; }
+    body { font-family: DejaVu Sans, Arial, sans-serif; font-size: 12px; color:#222; }
+    h1 { text-align: center; margin: 0 0 10px; }
+    .sub { text-align:center; font-size:11px; color:#555; margin: 0 0 12px; }
+
+    table { width:100%; border-collapse: collapse; }
+    th, td { border:1px solid #ccc; padding:6px; vertical-align: top; }
+    th { background:#eee; text-align:left; }
+    .right { text-align:right; }
+    .small { font-size: 10px; color:#666; }
+
+    /* Si quieres mostrar imágenes, descomenta .img y el <td> en la tabla */
+    .img { width:50px; height:50px; object-fit:cover; border:1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <h1>Inventario</h1>
+  <div class="sub">
+    {% if filters.q %}Texto: “{{ filters.q }}” · {% endif %}
+    {% if filters.category %}Categoría: {{ filters.category|title }} · {% endif %}
+    {% if filters.supplier %}Proveedor: {{ filters.supplier }} · {% endif %}
+    {% if filters.min_price %}Precio ≥ {{ filters.min_price }} · {% endif %}
+    {% if filters.max_price %}Precio ≤ {{ filters.max_price }}{% endif %}
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <!-- <th>Img</th> -->
+        <th>Producto</th>
+        <th>Categoría</th>
+        <th>Proveedor</th>
+        <th class="right">Precio</th>
+        <th class="right">Stock</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in products %}
+      <tr>
+        <!--
+        <td>
+          {% if p.image %}
+            <img class="img" src="{{ p.image.url }}">
+          {% endif %}
+        </td>
+        -->
+        <td>
+          <strong>{{ p.name }}</strong><br>
+          <span class="small">{{ p.description|default:"-" }}</span>
+        </td>
+        <td>{{ p.get_category_display }}</td>
+        <td>{{ p.supplier }}</td>
+        <td class="right">${{ p.price }}</td>
+        <td class="right">{{ p.quantity }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" style="text-align:center;">Sin resultados para los filtros dados.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
