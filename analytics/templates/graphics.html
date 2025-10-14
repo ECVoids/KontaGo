@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gráficas de Ventas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background:#f5f0e6;
+            margin:0; padding:20px;
+            color:#3e2723;
+        }
+        h1 {
+            text-align:center;
+            color:#4b2e2e;
+            margin-bottom:20px;
+        }
+        .chart-container {
+            max-width: 900px;
+            margin: 30px auto;
+            background:#fffaf3;
+            border:1px solid #d9c7a6;
+            border-radius:12px;
+            box-shadow:2px 4px 6px rgba(0,0,0,.1);
+            padding:20px;
+            text-align:center;
+        }
+        .chart-container img {
+            width:100%;
+            border-radius:10px;
+        }
+        .btn-inventory {
+            display:block;
+            width:fit-content;
+            margin:40px auto 0;
+            padding:12px 20px;
+            background:#4b2e2e;
+            color:#fff;
+            text-decoration:none;
+            border-radius:8px;
+            font-size:16px;
+            transition:background .2s;
+        }
+        .btn-inventory:hover { background:#3e2723; }
+        .message {
+            text-align:center;
+            font-weight:bold;
+            margin-top:40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 Análisis de Ventas</h1>
+
+    {% if message %}
+      <p class="message">{{ message }}</p>
+    {% else %}
+      <div class="chart-container">
+          <h2>Unidades Vendidas</h2>
+          <img src="data:image/png;base64,{{ graphic }}" alt="Gráfico de Ventas">
+      </div>
+
+      <div class="chart-container">
+          <h2>Facturación Total</h2>
+          <img src="data:image/png;base64,{{ graphic2 }}" alt="Gráfico de Facturación">
+      </div>
+    {% endif %}
+
+    <a href="{% url 'inventory_display' %}" class="btn-inventory">⬅ Volver al inventario</a>
+
+</body>
+</html>

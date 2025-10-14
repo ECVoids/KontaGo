@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'kontaG',  # Your main application
+    'inventory',  # Your main application
+    'invoices', # Invoice app
+    'analytics', # Analytics app
 ]
 
 MIDDLEWARE = [
