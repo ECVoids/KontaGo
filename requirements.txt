@@ -1,5 +1,9 @@
 django
 pillow
+matplotlib
+python-dotenv
+numpy
 requests
 xhtml2pdf
-
+markdown
+openai
