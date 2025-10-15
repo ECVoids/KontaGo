@@ -8,6 +8,7 @@ urlpatterns = [
     path('', include('inventory.urls')),    # incluye la home y demás rutas de inventario
     path('invoices/', include('invoices.urls')),  # incluye las rutas de facturación
     path('analytics/', include('analytics.urls')),  # incluye las rutas de análisis
+    path('account/', include('account.urls')),
 ]
 
 if settings.DEBUG:

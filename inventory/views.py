@@ -12,11 +12,12 @@ from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.conf import settings
-
+from django.contrib.auth.decorators import login_required
 from invoices.models import Factura, DetalleFactura, Venta
 from invoices.forms import FacturaForm, DetalleFacturaFormSet
 from .suggestions import suggest_price, assign_suggestions
 
+@login_required
 def home(request):
     return render(request, 'home.html')
 
