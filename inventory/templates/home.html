@@ -17,6 +17,29 @@
             color: #fff;
             padding: 2rem;
             text-align: center;
+            position: relative;
+        }
+        .logout-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            background: #8b5e3c;
+            color: #fff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.2s ease;
+        }
+         .logout-btn:hover {
+            background: #5c3d2e;
+        }
+         header img {
+            width: 100px;
+            height: auto;
+            display: block;
+            margin: 0 auto 1rem;
         }
         main {
             max-width: 900px;
@@ -56,7 +79,7 @@
 </head>
 <body>
     <header>
-        <!-- Logo KontaGo -->
+        <a href="{% url 'logout' %}" class="logout-btn">Cerrar sesión</a>
         <img src="/media/products/KontaGoLogo.png" alt="KontaGo Logo">
         <h1>KontaGo</h1>
         <p>Inventario inteligente & Manager de finanzas</p>
