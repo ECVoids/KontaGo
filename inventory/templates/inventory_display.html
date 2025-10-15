@@ -132,6 +132,15 @@
 <body>
     <h1>Inventario de Productos</h1>
 
+          {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <div class="alert {{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+
     <!-- Botón Product Entry con margen -->
     <a href="{% url 'product_entry' %}" class="btn-entry">➕ Crear Producto</a>
 

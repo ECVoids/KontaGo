@@ -88,7 +88,12 @@ def register_invoice(request):
                 # descontar stock
                 producto.quantity -= cantidad
                 producto.save()
-
+                # ✅ Verificación automática de stock mínimo (FR-11)
+                if hasattr(producto, "min_stock") and producto.quantity <= producto.min_stock:
+                    messages.warning(
+                        request,
+                        f"⚠️ El producto '{producto.name}' ha alcanzado su stock mínimo ({producto.quantity} unidades restantes)."
+                    )
                 total += subtotal
 
             factura.total = total
