@@ -22,6 +22,12 @@ Abre la carpeta donde se encuentra el proyecto utilizando el comando `cd` despu�
 ```
 pip install -r requirements.txt
 ```
+## Crear el archivo .env para la clave de la API de OpenAI
+
+Crea un archivo llamado openAI.env en la carpeta principal del proyecto.
+Después, escribe la siguiente línea dentro del archivo, reemplazando las X por una clave válida de la API de OpenAI:
+
+openAI_api_key = XXXXXXXXXX
 
 ## 🚀 Ejecutar el servidor local
 
