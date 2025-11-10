@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Sugerencias de Venta</title>
+{% extends 'base.html' %}
+
+{% block title %}Inventario - KontaGo{% endblock %}
+
+{% block content %}
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background:#f5f0e6;
-            margin:0; padding:20px;
-            color:#3e2723;
-        }
         h1 {
             text-align:center;
             color:#4b2e2e;
@@ -48,4 +44,5 @@
 
     <a href="{% url 'inventory_display' %}" class="btn-inventory">⬅ Volver al inventario</a>
 </body>
+{% endblock %}
 </html>

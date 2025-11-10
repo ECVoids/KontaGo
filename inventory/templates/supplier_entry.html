@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Supplier</title>
+{% extends 'base.html' %}
+
+{% block title %}Inicio - KontaGo{% endblock %}
+
+{% block content %}
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f0e6;
-            margin: 0;
-            padding: 20px;
-            color: #4b2e2e;
-        }
         .container {
             max-width: 600px;
             margin: 40px auto;
@@ -137,8 +132,7 @@
 
             <button type="submit" class="btn-submit">Submit</button>
         </form>
-
-        <a href="{% url 'supplier_list' %}" class="btn-home">⬅ Volver a Proveedores</a>
     </div>
 </body>
+{% endblock %}
 </html>

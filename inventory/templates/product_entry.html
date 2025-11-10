@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Crear producto</title>
+{% extends 'base.html' %}
+
+{% block title %}Inicio - KontaGo{% endblock %}
+
+{% block content %}
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f0e6;
-            margin: 0;
-            padding: 20px;
-            color: #4b2e2e;
-        }
         .container {
             max-width: 600px;
             margin: 40px auto;
@@ -169,4 +164,5 @@
         document.addEventListener("DOMContentLoaded", toggleExpiration);
     </script>
 </body>
+{% endblock %}
 </html>

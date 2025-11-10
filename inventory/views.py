@@ -42,7 +42,7 @@ def inventory_display(request):
     max_price  = request.GET.get("max_price", "").strip()
     in_stock   = request.GET.get("in_stock", "").strip()   # "" | "yes" | "no"
     order_by   = request.GET.get("order_by", "name").strip()
-    per_page   = int(request.GET.get("per_page", 24))
+    per_page   = int(request.GET.get("per_page", 9))
     page       = int(request.GET.get("page", 1))
 
     # SIN select_related, porque supplier no es FK

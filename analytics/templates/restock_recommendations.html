@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Recomendaciones de Reabastecimiento</title>
+{% extends 'base.html' %}
+
+{% block title %}Inventario - KontaGo{% endblock %}
+
+{% block content %}
     <style>
-        body { font-family: Arial; background: #f5f0e6; padding: 20px; }
         pre { background: #fffaf3; border: 1px solid #d9c7a6; border-radius: 10px; padding: 15px; white-space: pre-wrap; }
-        a { display: inline-block; background: #6d4c41; color: #fff; padding: 10px 15px; border-radius: 8px; text-decoration: none; margin-top: 20px; }
+        .btn-inventory-link {
+            display: inline-block;
+            background: #6d4c41;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
         h1 {
             text-align:center;
             color:#4b2e2e;
@@ -43,4 +52,5 @@
 
     <a href="{% url 'inventory_display' %}" class="btn-inventory">⬅ Volver al inventario</a>
 </body>
+{% endblock %}
 </html>

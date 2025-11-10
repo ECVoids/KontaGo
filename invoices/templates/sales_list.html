@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>📑 Historial de Facturas</title>
+{% extends 'base.html' %}
+
+{% block title %}Inventario - KontaGo{% endblock %}
+
+{% block content %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            background: #fdf6e3; 
-            color: #5c3d2e; 
-        }
         header {
             background: #d9a066;
             color: #fff;
@@ -103,10 +98,6 @@
     </script>
 </head>
 <body>
-    <header>
-        <h1>📜 Facturas Registradas</h1>
-    </header>
-    <main>
         <a href="{% url 'register_invoice' %}" class="back-btn">➕ Nueva Factura</a>
         {% if facturas %}
         <table>
@@ -152,7 +143,7 @@
         {% else %}
             <p>No hay facturas registradas.</p>
         {% endif %}
-    </main>
     <a href="{% url 'home' %}" class="btn-home">⬅ Volver al inicio</a>
 </body>
+{% endblock %}
 </html>

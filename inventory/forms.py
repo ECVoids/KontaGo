@@ -13,7 +13,7 @@ class ProductEntryForm(forms.Form):
      
     name = forms.CharField(label="Product Name", max_length=100)
     category = forms.ChoiceField(label="Category", choices=CATEGORY_CHOICES)
-    description = forms.CharField(label="Description", widget=forms.Textarea, required=False)
+    description = forms.CharField(label="Description", max_length=100, required=False)
     price = forms.DecimalField(label="Price", min_value=0, max_digits=10, decimal_places=2)
     quantity = forms.IntegerField(label="Initial Stock", min_value=0)
     supplier = forms.CharField(label="Supplier", max_length=100, required=False)

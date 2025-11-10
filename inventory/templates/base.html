@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}KontaGo{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #fdf6e3;
+            color: #5c3d2e;
+        }
+        header {
+            background: #d9a066;
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        header img {
+            width: 70px;
+            height: auto;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+        nav a:hover {
+            opacity: 0.8;
+        }
+        .logout-btn {
+            background: #8b5e3c;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.2s ease;
+        }
+        .logout-btn:hover {
+            background: #5c3d2e;
+        }
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            background: #fff8e7;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(92,61,46,0.2);
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #f1e0c5;
+            color: #5c3d2e;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <img src="/media/products/KontaGoLogo.png" alt="KontaGo Logo">
+            <h1 style="margin: 0;">KontaGo</h1>
+        </div>
+        <nav>
+            <a href="{% url 'inventory_display' %}">📦 Ver Inventario</a>
+            <a href="{% url 'supplier_list' %}">🏢 Ver Proveedores</a>
+            <a href="{% url 'register_invoice' %}">🧾 Manejo de Facturas</a>
+        </nav>
+        <a href="{% url 'logout' %}" class="logout-btn">Cerrar sesión</a>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        &copy; 2025 KontaGo. Todos los derechos reservados.
+    </footer>
+</body>
+</html>

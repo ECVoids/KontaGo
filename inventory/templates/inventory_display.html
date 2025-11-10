@@ -1,189 +1,235 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Inventario</title>
-    <style>
+{% extends 'base.html' %}
+
+{% block title %}Inventario - KontaGo{% endblock %}
+
+{% block content %}
+<style>
   /* ===== Base ===== */
-  body{
-    font-family: Arial, sans-serif;
-    background:#f5f0e6;
-    margin:0; padding:20px;
-    color:#3e2723;
+  h1 {
+    text-align: center;
+    color: #4b2e2e;
+    margin-bottom: 20px;
   }
-  h1{ text-align:center; color:#4b2e2e; margin-bottom:20px; }
 
-  /* ===== Botones generales ===== */
-  .btn-entry{
-    display:inline-block; margin:0 0 20px 178px;
-    background:#a97155; color:#fff; padding:10px 18px;
-    border-radius:8px; text-decoration:none; font:700 14px/1 Arial;
-    transition:background .2s;
+  /* ===== Menú hamburguesa ===== */
+  .menu-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
   }
-  .btn-entry:hover{ background:#8b5e3c; }
 
-  .btn-home{
-    display:block; width:fit-content; margin:30px auto 0; padding:12px 20px;
-    background:#4b2e2e; color:#fff; text-decoration:none; border-radius:8px; font-size:16px;
-    transition:background .2s;
+  .menu-toggle {
+    background-color: #a97155;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
   }
-  .btn-home:hover{ background:#3e2723; }
+
+  .menu-toggle:hover {
+    background-color: #8b5e3c;
+  }
+
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 55px;
+    background-color: #fffaf3;
+    border: 1px solid #d9c7a6;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    padding: 10px;
+    z-index: 100;
+    width: 260px;
+  }
+
+  .dropdown-menu a {
+    display: block;
+    background: #a97155;
+    color: white;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin: 6px 0;
+    font-weight: 700;
+    transition: background 0.2s;
+  }
+
+  .dropdown-menu a:hover {
+    background: #8b5e3c;
+  }
+
+  /* Mostrar menú activo */
+  .menu-container.active .dropdown-menu {
+    display: block;
+  }
+
+  /* ===== Botón volver ===== */
+  .btn-home {
+    display: block;
+    width: fit-content;
+    margin: 30px auto 0;
+    padding: 12px 20px;
+    background: #4b2e2e;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background .2s;
+  }
+  .btn-home:hover {
+    background: #3e2723;
+  }
 
   /* ===== Mensajes ===== */
-  .messages-container{ max-width:600px; margin:0 auto 20px; }
-  .message{ padding:12px; margin-bottom:10px; border-radius:8px; font:700 15px/1 Arial; }
-  .message.success{ background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
-  .message.error  { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
-  .message.warning{ background:#fff3cd; color:#856404; border:1px solid #ffeeba; }
+  .messages-container {
+    max-width: 600px;
+    margin: 0 auto 20px;
+  }
+  .message {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font: 700 15px/1 Arial;
+  }
+  .message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  .message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
 
-  /* ===== Filtros ===== */
-  .filters-form{
-    max-width:1200px; margin:16px auto 22px;
-    background:#f7efe2; border:1px solid #e8dcca; border-radius:14px;
-    padding:16px;
+  /* ===== Resto de estilos (filtros, tarjetas, etc.) ===== */
+  .filters-form {
+    max-width: 1200px;
+    margin: 16px auto 22px;
+    background: #f7efe2;
+    border: 1px solid #e8dcca;
+    border-radius: 14px;
+    padding: 16px;
   }
-  .filters-grid{
-    display:grid; gap:14px; align-items:end;
-    grid-template-columns:repeat(12, minmax(0,1fr));
+  .filters-grid {
+    display: grid;
+    gap: 14px;
+    align-items: end;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
   }
-  /* Fila 1: buscador (8) + categoría (4) */
-  .f-wide{ grid-column:span 8; }
-  /* Fila 2: proveedor (4) + mín (4) + máx (4) */
-  .f-item{ grid-column:span 4; }
-  /* Fila 3: acciones */
-  .f-actions{ grid-column:1 / -1; display:flex; gap:12px; justify-content:center; }
+  .f-item {
+    grid-column: span 4;
+  }
+  .f-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
 
-  .label{ display:block; margin:0 0 6px; font:700 13px/1 Arial; color:#4b2e2e; }
-  .input,.select{
-    width:100%; height:44px; padding:0 12px;
-    border:1.5px solid #d9c7a6; border-radius:12px;
-    background:#fffaf3; color:#3e2723; font-size:14px;
-    outline:none; transition:border-color .2s, box-shadow .2s, background .2s;
+  .inventory-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
-  .input::placeholder{ color:#9b8b7a; }
-  .input:focus,.select:focus{
-    border-color:#a97155; box-shadow:0 0 0 3px rgba(169,113,85,.18); background:#fff;
-  }
-  .select{
-    appearance:none; -webkit-appearance:none; -moz-appearance:none; padding-right:36px;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='%238b5e3c'><path d='M7 10l5 5 5-5z'/></svg>");
-    background-repeat:no-repeat; background-position:right 10px center;
-  }
-  input[type="number"]::-webkit-outer-spin-button,
-  input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
-  input[type="number"]{ -moz-appearance:textfield; }
 
-  .btn-search{
-    min-height:44px; padding:0 18px;
-    border:none; border-radius:12px; background:#a97155; color:#fff; font:800 14px/1 Arial;
-    cursor:pointer; transition:transform .06s, filter .2s;
+  .card {
+    background: #fffaf3;
+    border: 1px solid #d9c7a6;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 2px 4px 6px rgba(0,0,0,.1);
+    text-align: center;
   }
-  .btn-search:hover{ filter:brightness(.96); }
-  .btn-search:active{ transform:translateY(1px); }
 
-  .link-clear{
-    font:800 14px/1 Arial; color:#a97155; text-decoration:none; padding:10px 12px; border-radius:10px;
-    transition:color .2s, background .2s;
+  .card img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
   }
-  .link-clear:hover{ color:#4b2e2e; background:rgba(169,113,85,.12); }
 
-  /* ===== Grid de productos ===== */
-  .inventory-container{
-    display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
-    gap:20px; max-width:1200px; margin:0 auto;
-  }
-  .card{
-    background:#fffaf3; border:1px solid #d9c7a6; border-radius:12px; padding:20px;
-    box-shadow:2px 4px 6px rgba(0,0,0,.1); text-align:center; transition:transform .2s;
-  }
-  .card:hover{ transform:translateY(-5px); }
-  .card img{ width:100%; max-height:200px; object-fit:cover; border-radius:8px; margin-bottom:15px; }
-  .card h2{ font-size:22px; margin:0 0 10px; }
-  .card p{ margin:6px 0; font-size:15px; color:#4e342e; }
-  .card p strong{ color:#3e2723; }
-  .btn {display: inline-block; min-width: 150px; /* ancho fijo o ajustable */ padding: 12px 20px; margin: 10px auto 0; font: 700 15px/1 Arial; border: none; border-radius: 8px; cursor: pointer; text-align: center;}
-  .btn-add{ background:#6d4c41; color:#fff; } .btn-add:hover{ background:#5d4037; }
-  .btn-delete{ background:#8d3c2b; color:#fff; } .btn-delete:hover{ background:#6e2c1a; }
-
-  /* ===== Centrando botones dentro de cada tarjeta ===== */
-  .card .btn {
+  .btn {
     display: inline-block;
-    margin: 10px auto;
+    min-width: 150px;
+    padding: 12px 20px;
+    margin: 10px auto 0;
+    font: 700 15px/1 Arial;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
   }
 
+  .btn-add { background: #6d4c41; color: #fff; }
+  .btn-add:hover { background: #5d4037; }
+  .btn-delete { background: #8d3c2b; color: #fff; }
+  .btn-delete:hover { background: #6e2c1a; }
 
-  /* ===== Paginación ===== */
-  .pagination{ margin:16px auto; display:flex; gap:12px; justify-content:center; align-items:center; }
-
-  /* ===== Responsive ===== */
-  @media (max-width:900px){
-    .f-wide{ grid-column:span 12; }
-    .f-item{ grid-column:span 6; }
-    .f-actions{ grid-column:span 12; }
+  @media (max-width:600px){
+    .dropdown-menu { width: 90%; left: 5%; }
   }
-  @media (max-width:560px){
-    .f-item, .f-wide, .f-actions{ grid-column:span 12; }
-  }
+</style>
 
-  </style>
+<script>
+  // Script para alternar el menú
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuContainer = document.querySelector('.menu-container');
+    const toggle = document.querySelector('.menu-toggle');
 
+    toggle.addEventListener('click', () => {
+      menuContainer.classList.toggle('active');
+    });
 
-</head>
-<body>
-    <h1>Inventario de Productos</h1>
+    // Cierra el menú al hacer clic fuera
+    document.addEventListener('click', (e) => {
+      if (!menuContainer.contains(e.target)) {
+        menuContainer.classList.remove('active');
+      }
+    });
+  });
+</script>
 
-          {% if messages %}
-        <div class="messages">
-          {% for message in messages %}
-            <div class="alert {{ message.tags }}">{{ message }}</div>
-          {% endfor %}
-        </div>
-      {% endif %}
+<h1>Inventario de Productos</h1>
 
+<!-- ===== Menú desplegable ===== -->
+<div class="menu-container">
+  <button class="menu-toggle">☰ Opciones</button>
+  <div class="dropdown-menu">
+    <a href="{% url 'product_entry' %}">➕ Crear Producto</a>
+    <a href="{% url 'inventory_pdf' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}">📄 Exportar PDF buscador</a>
+    <a href="{% url 'graphics' %}">📊 Gráficas</a>
+    <a href="{% url 'selling_suggestions' %}">💰 Sugerencia de ventas (IA)</a>
+    <a href="{% url 'restock_recommendations' %}">🤖 Reabastecimiento (IA)</a>
+    <a href="{% url 'slow_inventory_alerts' %}">⚠️ Inventario Lento (IA)</a>
+  </div>
+</div>
 
-    <!-- Botón Product Entry con margen -->
-    <a href="{% url 'product_entry' %}" class="btn-entry">➕ Crear Producto</a>
+{% if messages %}
+<div class="messages-container">
+  {% for message in messages %}
+  <div class="message {{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
 
-    <a href="{% url 'inventory_pdf' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}"
-   class="btn-entry" style="margin-left:12px;background:#6d4c41;">
-  📄 Exportar PDF buscador
-    </a>
-      <a href="{% url 'graphics' %}" class="btn-entry" style="margin-left:12px;background:#5b4d40;">
-        📊 Gráficas
-      </a>
-
-      <a href="{% url 'selling_suggestions' %}" class="btn-entry" style="margin-left:12px;background:#7b553c;">
-        💰 Sugerencia de ventas (IA)
-      </a>
-
-      <a href="{% url 'restock_recommendations' %}" class="btn-entry" style="background:#395f3a;margin-left:12px;">
-        🤖 Reabastecimiento (IA)
-      </a>
-
-      <a href="{% url 'slow_inventory_alerts' %}" class="btn-entry" style="background:#a5473c;margin-left:12px;">
-        ⚠️ Inventario Lento (IA)
-      </a>
-    </div>
-
-    <!-- Bloque de mensajes -->
-    {% if messages %}
-    <div class="messages-container">
-        {% for message in messages %}
-            <div class="message {{ message.tags }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    <form method="get" class="filters-form">
+<!-- ===== Filtros ===== -->
+<form method="get" class="filters-form">
   <div class="filters-grid">
-    <!-- FILA 1: buscador (8/12) + categoría (4/12) -->
     <div class="f-item" style="grid-column: 1 / span 7;">
-      <input
-        type="text" name="q" class="input"
+      <input type="text" name="q" class="input"
         placeholder="Buscar por nombre, descripción, categoría o proveedor…"
-        value="{{ filters.q }}" aria-label="Buscar">
+        value="{{ filters.q }}">
     </div>
 
     <div class="f-item" style="grid-column: 9 / span 4;">
@@ -191,18 +237,17 @@
       <select name="category" class="select">
         <option value="">Todas</option>
         {% for c in categories %}
-          <option value="{{ c }}" {% if filters.category == c %}selected{% endif %}>{{ c|title }}</option>
+        <option value="{{ c }}" {% if filters.category == c %}selected{% endif %}>{{ c|title }}</option>
         {% endfor %}
       </select>
     </div>
 
-    <!-- FILA 2: proveedor (4/12) + precio mín (4/12) + precio máx (4/12) -->
     <div class="f-item" style="grid-column: 1 / span 4;">
       <label class="label">Proveedor</label>
       <select name="supplier" class="select">
         <option value="">Todos</option>
         {% for s in suppliers %}
-          <option value="{{ s }}" {% if filters.supplier == s %}selected{% endif %}>{{ s }}</option>
+        <option value="{{ s }}" {% if filters.supplier == s %}selected{% endif %}>{{ s }}</option>
         {% endfor %}
       </select>
     </div>
@@ -217,53 +262,81 @@
       <input type="number" step="0.01" name="max_price" class="input" value="{{ filters.max_price }}">
     </div>
 
-    <!-- FILA 3: acciones toda la fila -->
-    <div class="f-actions" style="grid-column: 1 / -1; justify-content: center;">
+    <div class="f-actions">
       <button type="submit" class="btn-search">🔎 Buscar</button>
       <a href="{% url 'inventory_display' %}" class="link-clear">Limpiar</a>
     </div>
   </div>
 </form>
 
-     <div class="inventory-container">
-        {% for product in products %}
-          <div class="card">
-              {% if product.image %}
-                  <img src="{{ product.image.url }}" alt="{{ product.name }}">
-              {% endif %}
-              <h2>{{ product.name }}</h2>
-              <p><strong>Categoría:</strong> {{ product.get_category_display }}</p>
+<!-- ===== Productos ===== -->
+<div class="inventory-container">
+  {% for product in products %}
+  <div class="card">
+    {% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    {% endif %}
+    <h2>{{ product.name }}</h2>
+    <p><strong>Categoría:</strong> {{ product.get_category_display }}</p>
+    {% if product.expiration_date %}
+    <p><strong>Fecha de expiración:</strong> {{ product.expiration_date }}</p>
+    {% endif %}
+    <p><strong>Proveedor:</strong> {{ product.supplier }}</p>
+    <p><strong>Precio:</strong> ${{ product.price }}</p>
+    <p><strong>Stock:</strong> {{ product.quantity }}</p>
+    <p><strong>Descripción:</strong> {{ product.description }}</p>
 
-              {% if product.expiration_date %}
-                  <p><strong>Fecha de expiración:</strong> {{ product.expiration_date }}</p>
-              {% endif %}
+    <details style="margin-top:10px; background:#f7efe2; border:1px solid #d9c7a6; border-radius:10px; padding:10px;">
+      <summary style="cursor:pointer; font-weight:bold; color:#6d4c41;">📋 Sugerencias de Almacenamiento & Manejo</summary>
+      <div style="margin-top:8px; text-align:left; color:#4e342e; font-size:14px; white-space:pre-wrap;">
+        {{ product.product_assigned_suggestions }}
+      </div>
+    </details>
 
-              <p><strong>Proveedor:</strong> {{ product.supplier }}</p>
-              <p><strong>Precio:</strong> ${{ product.price }}</p>
-              <p><strong>Stock:</strong> {{ product.quantity }}</p>
-              <p><strong>Descripción:</strong> {{ product.description }}</p>
+    <a href="{% url 'add_unit' product.id %}" class="btn btn-add">➕ Añadir unidad</a>
+    <a href="{% url 'delete_product' product.id %}" class="btn btn-delete"
+      onclick="return confirm('¿Seguro que quieres eliminar {{ product.name }}?');">
+      🗑 Eliminar producto
+    </a>
+  </div>
+  {% empty %}
+  <p style="text-align:center; color:#6d4c41;">No hay productos en el inventario.</p>
+  {% endfor %}
+</div>
 
-              <!-- 🔽 Desplegable para las sugerencias de manejo -->
-              <details style="margin-top:10px; background:#f7efe2; border:1px solid #d9c7a6; border-radius:10px; padding:10px;">
-                  <summary style="cursor:pointer; font-weight:bold; color:#6d4c41;">📋 Sugerencias de Almacenamieto & Manejo</summary>
-                  <div style="margin-top:8px; text-align:left; color:#4e342e; font-size:14px; white-space:pre-wrap;">
-                      {{ product.product_assigned_suggestions }}
-                  </div>
-              </details>
+<!-- ===== Paginación ===== -->
+{% if page_obj.has_other_pages %}
+  <div style="text-align:center; margin:30px 0;">
+    <div style="display:inline-flex; gap:6px; flex-wrap:wrap;">
 
-              <a href="{% url 'add_unit' product.id %}" class="btn btn-add">➕ Añadir unidad</a>
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+           style="padding:8px 12px; background:#a97155; color:white; border-radius:6px; text-decoration:none;">
+          ← Anterior
+        </a>
+      {% endif %}
 
-              <a href="{% url 'delete_product' product.id %}" 
-                class="btn btn-delete"
-                onclick="return confirm('¿Seguro que quieres eliminar {{ product.name }}?');">
-                  🗑 Eliminar producto
-              </a>
-          </div>
-          {% empty %}
-          <p style="text-align:center; color:#6d4c41;">No hay productos en el inventario.</p>
-          {% endfor %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <span style="padding:8px 12px; background:#4b2e2e; color:white; border-radius:6px;">{{ num }}</span>
+        {% elif num > page_obj.number|add:-3 and num < page_obj.number|add:3 %}
+          <a href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+             style="padding:8px 12px; background:#d9c7a6; color:#4b2e2e; border-radius:6px; text-decoration:none;">
+             {{ num }}
+          </a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+           style="padding:8px 12px; background:#a97155; color:white; border-radius:6px; text-decoration:none;">
+          Siguiente →
+        </a>
+      {% endif %}
     </div>
-    <!-- Botón Back to Home abajo -->
-    <a href="{% url 'home' %}" class="btn-home">⬅ Volver a inicio</a>
-</body>
-</html>
+  </div>
+{% endif %}
+
+<a href="{% url 'home' %}" class="btn-home">⬅ Volver a inicio</a>
+
+{% endblock %}

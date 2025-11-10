@@ -1,98 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>KontaGo - Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            background: #fdf6e3; /* beige cálido */
-            color: #5c3d2e; /* café oscuro */
-        }
-        header {
-            background: #d9a066;
-            color: #fff;
-            padding: 2rem;
-            text-align: center;
-            position: relative;
-        }
-        .logout-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1.5rem;
-            background: #8b5e3c;
-            color: #fff;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: background 0.2s ease;
-        }
-         .logout-btn:hover {
-            background: #5c3d2e;
-        }
-         header img {
-            width: 100px;
-            height: auto;
-            display: block;
-            margin: 0 auto 1rem;
-        }
-        main {
-            max-width: 900px;
-            margin: 2rem auto;
-            background: #fff8e7;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(92,61,46,0.2);
-            text-align: center;
-        }
-        h1, h2 {
-            margin-top: 0;
-            color: #5c3d2e;
-        }
-        .cta-btn {
-            display: inline-block;
-            margin: 1rem;
-            padding: 0.8rem 2rem;
-            background: #a97155;
-            color: #fff;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: 0.2s;
-        }
-        .cta-btn:hover {
-            background: #8b5e3c;
-        }
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background: #f1e0c5;
-            color: #5c3d2e;
-            margin-top: 3rem;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <a href="{% url 'logout' %}" class="logout-btn">Cerrar sesión</a>
-        <img src="/media/products/KontaGoLogo.png" alt="KontaGo Logo">
-        <h1>KontaGo</h1>
-        <p>Inventario inteligente & Manager de finanzas</p>
-    </header>
-    <main>
-        <h2>Acciones rápidas </h2>
-        <!--<a href="{% url 'product_takeout' %}" class="cta-btn">➖ Product Takeout</a> -->
-        <a href="{% url 'inventory_display' %}" class="cta-btn" style="background:#b08968;">📦 Ver Inventario</a>
-        <a href="{% url 'supplier_list' %}" class="cta-btn" style="background:#d17a22;">🏢 Ver Proveedores</a>
-        <a href="{% url 'register_invoice' %}" class="cta-btn" style="background:#6a994e;">🧾 Manejo de Facturas</a>
-    </main>
-    <footer>
-        &copy; 2025 KontaGo. All rights reserved.
-    </footer>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Inicio - KontaGo{% endblock %}
+
+{% block content %}
+    <h2 style="text-align:center; color:#5c3d2e;">Bienvenido a KontaGo</h2>
+    <p style="text-align:center;">
+        Administra tu inventario, proveedores y facturas de manera rápida y eficiente.<br>
+        Usa los botones del encabezado para navegar por las secciones principales.
+    </p>
+
+    <div style="text-align:center; margin-top:2rem;">
+        <a href="{% url 'inventory_display' %}" 
+           class="cta-btn" 
+           style="background:#b08968; color:#fff; text-decoration:none; padding:0.8rem 2rem; border-radius:6px; margin:0 1rem;">
+           📦 Ver Inventario
+        </a>
+
+        <a href="{% url 'supplier_list' %}" 
+           class="cta-btn" 
+           style="background:#d17a22; color:#fff; text-decoration:none; padding:0.8rem 2rem; border-radius:6px; margin:0 1rem;">
+           🏢 Ver Proveedores
+        </a>
+
+        <a href="{% url 'register_invoice' %}" 
+           class="cta-btn" 
+           style="background:#6a994e; color:#fff; text-decoration:none; padding:0.8rem 2rem; border-radius:6px; margin:0 1rem;">
+           🧾 Manejo de Facturas
+        </a>
+    </div>
+{% endblock %}
