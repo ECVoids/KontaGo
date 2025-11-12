@@ -109,6 +109,99 @@
     border: 1px solid #f5c6cb;
   }
 
+  /* ===== Filtros ===== */
+.filters-form {
+  max-width: 1200px;
+  margin: 24px auto 30px;
+  background: #fffaf3;
+  border: 1px solid #e8dcca;
+  border-radius: 16px;
+  padding: 20px 28px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 18px;
+  align-items: end;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  color: #5d4037;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d6ccc2;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 15px;
+  color: #4b2e2e;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus,
+.select:focus {
+  border-color: #b08968;
+  box-shadow: 0 0 0 3px rgba(176, 137, 104, 0.25);
+  outline: none;
+}
+
+.f-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.btn-search {
+  background-color: #b08968;
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-search:hover {
+  background-color: #9c6644;
+  transform: scale(1.03);
+}
+
+.link-clear {
+  color: #6d4c41;
+  font-weight: 600;
+  text-decoration: none;
+  align-self: center;
+  transition: color 0.2s;
+}
+
+.link-clear:hover {
+  color: #9c6644;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+  .f-item {
+    grid-column: span 12 !important;
+  }
+}
+
+
   /* ===== Resto de estilos (filtros, tarjetas, etc.) ===== */
   .filters-form {
     max-width: 1200px;
