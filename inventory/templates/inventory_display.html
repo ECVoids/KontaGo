@@ -9,7 +9,8 @@
   h1 {
     text-align: center;
     color: #4b2e2e;
-    margin-bottom: 20px;
+    margin-top: 45px;   
+    margin-bottom: 35px;
   }
 
   /* ===== Menú hamburguesa ===== */
@@ -376,8 +377,7 @@
 
 {% include "Menu_Inventario.html" %}
 
-<h1>Inventario de Productos</h1>
-
+<!-- ===== Mensajes ===== -->
 {% if messages %}
 <div class="messages-container">
   {% for message in messages %}
@@ -431,7 +431,7 @@
     </div>
   </div>
 </form>
-
+<h1>Inventario de Productos</h1>
 <!-- ===== Productos ===== -->
 <div class="inventory-container">
   {% for product in products %}

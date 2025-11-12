@@ -7,3 +7,4 @@ requests
 xhtml2pdf
 markdown
 openai
+django-widget-tweaks
