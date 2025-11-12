@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'account',
     'inventory',  # Your main application
     'invoices', # Invoice app
-    'analytics', # Analytics app
+    'analytics',
+    'widget_tweaks', # Analytics app
 ]
 
 MIDDLEWARE = [

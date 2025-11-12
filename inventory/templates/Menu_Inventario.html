@@ -1,0 +1,88 @@
+<div class="menu-inventario">
+  <button class="menu-btn" id="menuToggle">☰ Opciones</button>
+  <div class="menu-dropdown" id="menuDropdown">
+    <a href="{% url 'product_entry' %}">➕ Crear Producto</a>
+    <a href="{% url 'product_takeout' %}">🚫Eliminar Producto</a>
+    <a href="{% url 'inventory_pdf' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}">📄 Exportar PDF buscador</a>
+    <a href="{% url 'graphics' %}">📊 Gráficas</a>
+    <a href="{% url 'selling_suggestions' %}">💰 Sugerencia de ventas (IA)</a>
+    <a href="{% url 'restock_recommendations' %}">🤖 Reabastecimiento (IA)</a>
+    <a href="{% url 'slow_inventory_alerts' %}">⚠️ Inventario Lento (IA)</a>
+  </div>
+</div>
+
+<style>
+.menu-inventario {
+  position: fixed;
+  top: 150px;
+  left: 30px;
+  z-index: 1000;
+}
+
+.menu-btn {
+  background: #d9a066;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.menu-btn:hover {
+  background: #b8813e;
+  transform: scale(1.05);
+}
+
+.menu-dropdown {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  background: #fff8e7;
+  box-shadow: 0 4px 12px rgba(92, 61, 46, 0.25);
+  border-radius: 8px;
+  min-width: 220px;
+  overflow: hidden;
+}
+
+.menu-dropdown a {
+  display: block;
+  padding: 0.7rem 1rem;
+  color: #5c3d2e;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.menu-dropdown a:hover {
+  background: #f1e0c5;
+}
+</style>
+
+<script>
+// Este script usa el evento DOMContentLoaded y maneja clics correctamente
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.getElementById("menuToggle");
+  const dropdown = document.getElementById("menuDropdown");
+
+  if (toggleBtn && dropdown) {
+    // Mostrar/ocultar menú
+    toggleBtn.addEventListener("click", (event) => {
+      event.stopPropagation(); // evita que se cierre inmediatamente
+      const isVisible = dropdown.style.display === "block";
+      dropdown.style.display = isVisible ? "none" : "block";
+    });
+
+    // Cerrar si se hace clic fuera
+    document.addEventListener("click", (event) => {
+      if (!dropdown.contains(event.target) && event.target !== toggleBtn) {
+        dropdown.style.display = "none";
+      }
+    });
+  } else {
+    console.error("⚠️ No se encontró el botón o el menú desplegable en el DOM.");
+  }
+});
+</script>
