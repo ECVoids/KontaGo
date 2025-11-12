@@ -3,17 +3,14 @@
 {% block title %}Inicio - KontaGo{% endblock %}
 
 {% block content %}
-    <h2 style="text-align:center; color:#5c3d2e;">Bienvenido a KontaGo</h2>
-    <p style="text-align:center;">
-        Administra tu inventario, proveedores y facturas de manera rápida y eficiente.<br>
-        Usa los botones del encabezado para navegar por las secciones principales.
-    </p>
+    <h2 style="text-align:center; color:#5c3d2e; font-size:5rem; font-family: 'Times New Roman', Times, serif;" >KontaGo</h2>
 
     <div style="text-align:center; margin-top:2rem;">
         <a href="{% url 'inventory_display' %}" 
            class="cta-btn" 
            style="background:#b08968; color:#fff; text-decoration:none; padding:0.8rem 2rem; border-radius:6px; margin:0 1rem;">
            📦 Ver Inventario
+           
         </a>
 
         <a href="{% url 'supplier_list' %}" 

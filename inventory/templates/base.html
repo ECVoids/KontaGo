@@ -13,40 +13,69 @@
             color: #5c3d2e;
         }
         header {
-            background: #d9a066;
-            color: #fff;
-            padding: 1rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        background: #d9a066;
+        color: #fff;
+        padding: 1rem 2rem;
         }
-        header img {
-            width: 70px;
-            height: auto;
+
+        .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
         }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 1rem;
-            font-weight: bold;
-            transition: opacity 0.3s;
+
+        .header-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
         }
-        nav a:hover {
-            opacity: 0.8;
+
+        .header-left img {
+        width: 70px;
+        height: auto;
         }
+
+        .header-center {
+        flex-grow: 1;
+        text-align: center;
+        }
+
+        .header-center a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 1rem;
+        font-weight: bold;
+        transition: opacity 0.3s;
+        }
+
+        .header-center a:hover {
+        opacity: 0.8;
+        }
+
+        .header-right {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        justify-content: flex-end;
+        min-width: 220px; /* asegura que quede bien alineado */
+        }
+
         .logout-btn {
-            background: #8b5e3c;
-            color: #fff;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: background 0.2s ease;
+        background: #8b5e3c;
+        color: #fff;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: background 0.2s ease;
         }
+
         .logout-btn:hover {
-            background: #5c3d2e;
+        background: #5c3d2e;
         }
+
         main {
             max-width: 1000px;
             margin: 2rem auto;
@@ -62,21 +91,34 @@
             color: #5c3d2e;
             margin-top: 3rem;
         }
+        .btn-login:hover {
+            background-color: white;
+        }
     </style>
 </head>
 <body>
     <header>
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <img src="/media/products/KontaGoLogo.png" alt="KontaGo Logo">
-            <h1 style="margin: 0;">KontaGo</h1>
-        </div>
-        <nav>
-            <a href="{% url 'inventory_display' %}">📦 Ver Inventario</a>
-            <a href="{% url 'supplier_list' %}">🏢 Ver Proveedores</a>
-            <a href="{% url 'register_invoice' %}">🧾 Manejo de Facturas</a>
-        </nav>
-        <a href="{% url 'logout' %}" class="logout-btn">Cerrar sesión</a>
-    </header>
+  <div class="header-container">
+    <!-- IZQUIERDA: Logo -->
+    <div class="header-left">
+      <img src="/media/products/KontaGoLogo.png" alt="KontaGo Logo">
+      <h1>KontaGo</h1>
+    </div>
+
+    <!-- CENTRO: Navegación principal -->
+    <nav class="header-center">
+      <a href="{% url 'inventory_display' %}">📦 Inventario</a>
+      <a href="{% url 'supplier_list' %}">🏢 Proveedores</a>
+      <a href="{% url 'register_invoice' %}">🧾 Facturas</a>
+    </nav>
+
+    <!-- DERECHA: Cuenta y logout -->
+    <div class="header-right">
+      <a href="{% url 'perfil_usuario' %}" class="logout-btn" style="background:#c88f50;">👤 Mi cuenta</a>
+      <a href="{% url 'logout' %}" class="logout-btn">🚪 Cerrar sesión</a>
+    </div>
+  </div>
+</header>
 
     <main>
         {% block content %}

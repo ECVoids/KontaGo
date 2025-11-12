@@ -93,8 +93,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Product Takeout</h1>
-        <p class="subtext">Please fill in the form to register a product takeout</p>
+        <h1>Eliminar Unidades de Producto</h1>
+        <p class="subtext">Escribe en el formulario los datos para sacar productos de stock</p>
 
         {% if message %}
             <div class="message">{{ message }}</div>
@@ -103,10 +103,10 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn-submit">Register Takeout</button>
+            <button type="submit" class="btn-submit">Registrar salida de Stock</button>
         </form>
 
-        <a href="{% url 'home' %}" class="btn-home">⬅ Back to Home</a>
+        <a href="{% url 'inventory_display' %}" class="btn-home">⬅ Volver al Inventario</a>
     </div>
 </body>
 </html>

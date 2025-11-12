@@ -63,5 +63,5 @@ class SupplierForm(forms.ModelForm):
         return supplier
 
 class ProductTakeoutForm(forms.Form):
-    name = forms.CharField(label="Product Name", max_length=100)
-    quantity = forms.IntegerField(label="Quantity to Take Out", min_value=1)
+    name = forms.CharField(label="Nombre del Producto", max_length=100)
+    quantity = forms.IntegerField(label="Cantidad a Eliminar", min_value=1)

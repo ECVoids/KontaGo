@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block title %}Perfil de Usuario - KontaGo{% endblock %}
+
+{% block content %}
+<style>
+  .profile-container {
+    max-width: 700px;
+    margin: 40px auto;
+    background: #fffaf3;
+    border: 1px solid #e0d2c3;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 30px 40px;
+    color: #4b2e2e;
+  }
+
+  .profile-container h2 {
+    text-align: center;
+    color: #5c3d2e;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+
+  .profile-container hr {
+    border-color: #d9a066;
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 24px;
+  }
+
+  .profile-form label {
+    font-weight: 600;
+    color: #6d4c41;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .profile-form input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d6ccc2;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 15px;
+    color: #4b2e2e;
+  }
+
+  .profile-actions {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .btn-save {
+    background-color: #a97155;
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-save:hover {
+    background-color: #8b5e3c;
+  }
+
+  .btn-back {
+    background-color: #4b2e2e;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    margin-left: 12px;
+    transition: background 0.2s;
+  }
+
+  .btn-back:hover {
+    background-color: #3e2723;
+  }
+  .header-right {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        justify-content: flex-end;
+        min-width: 220px; /* asegura que quede bien alineado */
+  }
+
+
+  @media (max-width: 600px) {
+    .profile-form {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="profile-container">
+  <h2>👤 Perfil de Usuario</h2>
+  <hr>
+
+  <form method="POST" class="profile-form">
+    {% csrf_token %}
+    <div>
+      <label for="username">Usuario</label>
+      <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
+    </div>
+
+    <div>
+      <label for="email">Correo</label>
+      <input type="email" id="email" name="email" value="{{ user.email }}">
+    </div>
+
+    <div>
+      <label for="first_name">Nombre</label>
+      <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+    </div>
+
+    <div>
+      <label for="last_name">Apellido</label>
+      <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+    </div>
+
+    <div>
+      <label for="telefono">Teléfono</label>
+      <input type="text" id="telefono" name="telefono" value="{{ perfil.telefono }}">
+    </div>
+
+    <div>
+      <label for="rut">RUT</label>
+      <input type="text" id="rut" name="rut" value="{{ perfil.rut }}">
+    </div>
+    <div class="header-right" style="display: flex; justify-content: center; margin-top: 2rem;">
+        <button type="submit" class="btn-save">💾 Guardar Cambios</button>
+        <a href="{% url 'home' %}" 
+        style="
+          background: #d9a066; 
+          color: white; 
+          padding: 0.8rem 1.6rem; 
+          border-radius: 8px; 
+          text-decoration: none; 
+          font-weight: bold;
+          white-space: nowrap;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+          transition: background 0.2s ease;">
+        ⬅️ Volver al Inicio
+      </a>
+    </div>
+  </form>
+</div>
+{% endblock %}
