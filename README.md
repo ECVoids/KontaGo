@@ -49,3 +49,6 @@ python manage.py runserver
 Una vez que el servidor esté corriendo, accede a la siguiente dirección para usar KontaGo:
 
 [http://localhost:8000](http://localhost:8000)
+
+## Link desplegado
+[http://54.83.154.129/](http://54.83.154.129/)
