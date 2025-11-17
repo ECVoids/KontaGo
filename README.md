@@ -52,3 +52,13 @@ Una vez que el servidor esté corriendo, accede a la siguiente dirección para u
 
 ## Link desplegado
 [http://54.83.154.129/](http://54.83.154.129/)
+
+# Evidencias 
+
+<img width="1344" height="298" alt="image" src="https://github.com/user-attachments/assets/aa57bd14-57a6-42d6-8c6e-1d1685303e03" />
+
+<img width="1365" height="676" alt="image" src="https://github.com/user-attachments/assets/4d9137ae-0a94-4a40-aea0-d48cf0129cf0" />
+
+
+
+
